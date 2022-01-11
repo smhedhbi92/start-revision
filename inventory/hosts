@@ -4,5 +4,7 @@ all:
       hosts:
         webserver1:
           ansible_host: managedh1
+          ansible_user: ansadmin
+          ansible_connection: local
       vars:
-        web_version: "1.6"
+        web_version: "hosts 1.6"

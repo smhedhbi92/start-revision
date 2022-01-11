@@ -1,0 +1,12 @@
+---
+- name: display var content
+  hosts: webserver1
+  gather_facts: yes
+  vars:
+    web_version: "playbook 2.2"
+  tasks:
+    - name: display webserver version
+      vars:
+        web_version: "task 2.3"
+      debug:
+        msg: "{{ web_version }}"
