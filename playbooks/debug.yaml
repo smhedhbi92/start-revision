@@ -1,12 +1,33 @@
 ---
-- name: display var content
+- name: Exam preparation
   hosts: webserver1
   gather_facts: yes
-  vars:
-    web_version: "playbook 2.2"
   tasks:
-    - name: display webserver version
-      vars:
-        web_version: "task 2.3"
-      debug:
-        msg: "{{ web_version }}"
+    - block:
+      - name: display OS version
+        debug:
+          msg: "{{ ansible_facts['distribution'] }}"
+      - name: install httpd & mariadb
+        yum:
+          name:
+            - httpd
+            - mod_ssl
+            - httpd-tools
+            - php
+            - php-mysqlnd
+          state: latest
+      - name: verify services are installed
+        service:
+          name: "{{ item }}"
+          state: started
+        loop:
+          - httpd
+      tags:
+        - configure
+    - name: write report
+      copy:
+        content: "{{ ansible_facts['fqdn'] is configured }}"
+        dest: /root/report
+      tags:
+        - report
+        - always
